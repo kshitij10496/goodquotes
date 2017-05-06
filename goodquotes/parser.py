@@ -41,7 +41,7 @@ def search_quotes(book_title):
         else:
             quote_tags = None
 
-        new_quote = Quote(quote_text, quote_author, quote_book_title, tags=quote_tags)
+        new_quote = Quote(quote_text, quote_book_title, quote_author, tags=quote_tags)
         all_quotes.append(new_quote)
 
     return all_quotes

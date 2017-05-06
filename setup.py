@@ -2,8 +2,14 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='GoodQuotes',
-    version='0.0.1',
+    name = 'GoodQuotes',
+    author = 'kshitij10496',
+    author_email = 'KshitijSaraogi@gmail.com',
+    url = 'https://github.com/kshitij10496/goodquotes',
+ 
+    version = '0.1',
+    download_url = 'https://github.com/kshitij10496/goodquotes/archive/v0.1.tar.gz',
+    
     packages=find_packages(),
     install_requires=[
         'Click',
