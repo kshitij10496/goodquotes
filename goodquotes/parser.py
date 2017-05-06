@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from quote import Quote
+from .quote import Quote
 
 # 1. Handle search operation
 # 2. Create a soup from the response and send it to the parser
@@ -20,7 +20,7 @@ def search_quotes(book_title):
     base_url = 'https://www.goodreads.com/quotes/search'
     params = {'q': book_title}
     response = requests.get(base_url, params=params)
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
     all_quotes = []
 
@@ -29,6 +29,9 @@ def search_quotes(book_title):
         quote_content = quote.find('div', 'quoteText')
         stripped_quote = quote_content.text.split('//<![CDATA')[0]
         raw_quote = stripped_quote.split('\n')
+        if len(raw_quote) != 9:
+            continue
+
         quote_text, quote_author, quote_book_title = raw_quote[1].strip(), raw_quote[3].strip(), raw_quote[5].strip()
 
         tags_data = quote.find('div', 'greyText smallText left')
@@ -40,6 +43,5 @@ def search_quotes(book_title):
 
         new_quote = Quote(quote_text, quote_author, quote_book_title, tags=quote_tags)
         all_quotes.append(new_quote)
-        print(new_quote)
 
     return all_quotes

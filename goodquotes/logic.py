@@ -16,7 +16,7 @@ def random_book(file):
 
     return book_title, book_author
 
-def random_quote(book_title, book_author)
+def random_quote(book_title, book_author=None):
     book_quotes = search_quotes(book_title)
     random_quote = random.choice(book_quotes)
     return random_quote
