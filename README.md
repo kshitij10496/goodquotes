@@ -20,6 +20,10 @@ Supported version: Python 3.5+
 
     pip3 install goodquotes
 
+On Linux, use `sudo` if need be.
+
+    sudo pip3 install goodquotes
+
 ## Development
 
 Suggestions, Feature Requests and PRs are welcomed.
