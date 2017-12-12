@@ -21,16 +21,15 @@ def cli(book, author, library):
 
     if library is not None:
         import_library(library)
+        return
 
+    lib_exists = is_lib()
+    
     if book is not None:
         quote_book(book)
     elif author is not None:
         quote_author(author)
-
-
-    lib_exists = is_lib()
-    #print("lib_exists", lib_exists)
-    if lib_exists:
+    elif lib_exists:
         quote_library()
     else:
         click.echo(random_quote())
