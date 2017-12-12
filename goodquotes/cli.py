@@ -5,26 +5,35 @@ from .logic import random_quote, random_book
 
 CONFIG_FILE = os.path.expanduser('~') + '/.goodquotes'
 
-
 @click.command()
 @click.option('--book', '-b', default=None, help='Title of the book')
-@click.option('--library', '-l', default=None, help='Path to imported Goodreads library')
-def cli(book, library):
+@click.option('--author', '-a', default=None, help='Name of the author')
+@click.option('--library', '-l', default=None, help='Path to the Goodreads library')
+def cli(book, author, library):
     """ Generates a quote at random from your library.
-    Given a book, it prints the quote specific to this book.
+
+    Given a book, it prints the quote from this book.
+    Given the name of an author, the application prints a quote from among their books.
     """
-    if library is not None and book is not None:
-        click.echo('It seems that you are trying to perform two operations at the same time. But do not worry, we have got you covered, as always.')
-        click.echo("We will import your library while you enjoy a memorable moment from '{}'.")
+    #print("Book:", book)
+    #print("Author:", author)
+    #print("Library:", library)
 
     if library is not None:
         import_library(library)
 
     if book is not None:
         quote_book(book)
+    elif author is not None:
+        quote_author(author)
 
-    if book is None and library is None:
-        quote_book(None)
+
+    lib_exists = is_lib()
+    #print("lib_exists", lib_exists)
+    if lib_exists:
+        quote_library()
+    else:
+        click.echo(random_quote())
 
 
 def quote_book(book_title):
@@ -32,16 +41,17 @@ def quote_book(book_title):
         rquote = random_quote(book_title)
         click.echo(rquote)
 
-    elif os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r') as config_file:
-            KINDLE_LIBRARY = (config_file.readline().split('=')[1]).strip()
+def is_lib():
+    return os.path.exists(CONFIG_FILE)
 
-        selected_title, selected_author = random_book(KINDLE_LIBRARY)
-        rquote = random_quote(selected_title, selected_author)
-        click.echo(rquote)
 
-    else:
-        click.echo("You have to either import your Goodreads Library or tell me about your favourite novel! I will listen intently. :)")
+def quote_library():
+    with open(CONFIG_FILE, 'r') as config_file:
+        KINDLE_LIBRARY = (config_file.readline().split('=')[1]).strip()
+
+    selected_title, selected_author = random_book(KINDLE_LIBRARY)
+    rquote = random_quote(selected_title, selected_author)
+    click.echo(rquote)
 
 
 def import_library(filepath):
